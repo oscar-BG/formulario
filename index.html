@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.101.0">
+    <title>Inicio de sesión</title>
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.6/examples/sign-in/">
+    <!-- Bootstrap core CSS -->
+    <link href="src/assets/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="src/style/signin.css" rel="stylesheet">
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+    </style>
+    
+  </head>
+  <body class="text-center">
+    
+    <form id="frm_ingresar" class="form-signin">
+    
+    <h1 class="h3 mb-3 font-weight-normal">Inicio de sesión</h1>
+    <label for="inp_usuario" class="sr-only">Usuario</label>
+    <input type="text" id="inp_usuario" class="form-control" placeholder="Usuario" required autofocus>
+    <label for="inp_clave" class="sr-only">Contraseña</label>
+    <input type="password" id="inp_clave" class="form-control" placeholder="Contraseña" required>
+    <div id="alert_error_usuario" style="display: none;" class="alert alert-danger" role="alert">
+        Usuario o contraseña incorrectos
+    </div>
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Ingresar</button>
+    </form>
+
+    <script src="src/js/jquery.min.js"></script>
+    <script src="src/js/funciones.js"></script>
+    <script>
+        
+
+        $(document).ready(function(){
+            
+        })
+
+        $("#frm_ingresar").submit(function(e){
+            e.preventDefault()
+
+            let usuario =  $("#inp_usuario").val()
+            let clave = $("#inp_clave").val()
+
+            $.ajax({
+                type: "POST",
+                url: url,
+                data:{
+                    op: "ingresar_tablero",
+                    usuario: usuario,
+                    clave: clave
+                },
+                dataType: "json",
+                success: function (response){
+                    console.log(response);
+
+                    if (response.status) {
+                      localStorage.setItem('id_usuario', response.id_usuario)
+                      localStorage.setItem('usuario', response.usuario)
+                      location.href = 'tablero.html';
+                    } else {
+                        $("#inp_usuario").val('')
+                        $("#inp_clave").val('')
+
+                        $("#alert_error_usuario").show()
+                    }
+                },
+                error: function (request, status, error) {
+                    console.log("request: ", request)
+                    console.log("status: ", status)
+                    console.log("error: ", error)
+                    cerrar_loader()
+                }
+            })
+        })
+
+    </script>
+
+    
+  </body>
+</html>

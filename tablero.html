@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.101.0">
+    <title>Tablero</title>
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.6/examples/dashboard/">
+    <!-- Bootstrap core CSS -->
+    <link href="src/assets/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="src/style/dashboard.css" rel="stylesheet">
+    <script>
+      if (localStorage.getItem("usuario") == null) {
+        window.location = "index.html"
+      }
+    </script>
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    
+    <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+      <a class="navbar-brand col-md-3 col-lg-2 mr-0 px-3" href="#">Formulario</a>
+      <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-toggle="collapse" data-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <ul class="navbar-nav px-3">
+        <li class="nav-item text-nowrap">
+          <a class="nav-link" onclick="cerrar_sesion()">Cerrar sesión</a>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row">
+        <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+          <div class="sidebar-sticky pt-3">
+            <ul class="nav flex-column">
+              <li class="nav-item">
+                <a class="nav-link active" href="tablero.html">
+                  <span data-feather="home"></span>
+                  Inicio <span class="sr-only"></span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="usuarios.html">
+                  <span data-feather="file"></span>
+                  Usuarios
+                </a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+          <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">Registrar</h1>
+          </div>
+
+          <br><br>
+          <form id="frm_registrar_usuarios">
+            <div class="form-row">
+              <div class="col-md-4">
+                <label for="inp_nombre">Nombre</label>
+                <input type="text" class="form-control" id="inp_nombre"  placeholder="Ingrese nombre" required maxlength="50">
+              </div>
+              <div class="col-md-4">
+                <label for="inp_apellido">Apellido</label>
+                <input type="text" class="form-control" id="inp_apellido" placeholder="Ingrese apellido" required maxlength="150">
+              </div>
+              <div class="col-md-4">
+                <label for="inp_ciudad">Ciudad</label>
+                <input type="text" class="form-control" id="inp_ciudad" placeholder="Ingrese ciudad" required maxlength="100">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="col-md-4">
+                <label for="inp_rfc">RFC</label>
+                <input type="text" class="form-control" id="inp_rfc" placeholder="Ingrese RFC" required maxlength="100">
+              </div>
+              <div class="col-md-4">
+                <label for="inp_delito">Delito</label>
+                <textarea class="form-control" name="inp_delito" id="inp_delito" cols="5" rows="5" required maxlength="150"></textarea>
+              </div>
+              <div class="col-md-4">
+                <label for="inp_hora">Hora</label>
+                <input type="time" class="form-control" id="inp_hora" placeholder="Hora" required>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="col-md-6">
+                <label for="inp_fecha">Fecha</label>
+                <input type="date" class="form-control" id="inp_fecha" placeholder="Fecha" required>
+              </div>
+              <div class="col-md-6">
+                <label for="inp_pertenencias">Pertenencias</label>
+                <textarea class="form-control" name="inp_pertenencias" id="inp_pertenencias" cols="5" rows="5" maxlength="150" required></textarea>
+              </div>
+            </div>
+            <br>
+            <center>
+              <button type="submit" class="btn btn-primary">Guardar</button>
+            </center>
+          </form>
+
+          <footer>
+            <br><br>
+            <span>Ultima actualización 01/01/2023</span>
+          </footer>
+        </main>
+      </div>
+    </div>
+
+
+    <script src="src/js/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="src/js/jquery.min.js"><\/script>')</script><script src="src/assets/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js"></script>
+    <script src="src/swal/swal2.js"></script>
+    <script src="src/js/funciones.js"></script>
+    <script>
+      $("#frm_registrar_usuarios").submit(function(e) {
+        e.preventDefault()
+
+        abrir_loader()
+
+        let nombre = $("#inp_nombre").val()
+        let apellido = $("#inp_apellido").val()
+        let ciudad = $("#inp_ciudad").val()
+        let rfc = $("#inp_rfc").val()
+        let delito = $("#inp_delito").val()
+        let hora = $("#inp_hora").val()
+        let fecha = $("#inp_fecha").val()
+        let pertenencias = $("#inp_pertenencias").val()
+
+        $.ajax({
+          type: "POST",
+          url: url,
+          data: {
+            op: "registrar_usuario",
+            nombre: nombre,
+            apellido: apellido,
+            ciudad: ciudad,
+            rfc: rfc,
+            delito: delito,
+            hora: hora,
+            fecha: fecha,
+            pertenencias: pertenencias
+          },
+          dataType: "json",
+          success: function (response) {
+            console.log(response);
+            cerrar_loader()
+            if (response.status) {
+              console.log('Se registro el usuario');
+              limpiar_campos_formulario()
+              noificacion_swal('Registrar usuario','Usuario registrado','success')
+            } else {
+              if (response.mensaje == 'EXISTE_RFC') {
+                let rfc = response.rfc
+                limpiar_campos_formulario()
+                noificacion_swal('Registrar usuario',`Ya existe un usuario registrado con el mismo RCF [${rfc}]`,'info')
+              }
+            }
+            
+          },
+          error: function (request, status, error) {
+            console.log("request: ", request)
+            console.log("status: ", status)
+            console.log("error: ", error)
+            noificacion_swal('Error','Se genero un error al consultar los datos','error')
+          }
+        })
+      })
+
+      function limpiar_campos_formulario() {
+        $("#inp_nombre").val('')
+        $("#inp_apellido").val('')
+        $("#inp_ciudad").val('')
+        $("#inp_rfc").val('')
+        $("#inp_delito").val('')
+        $("#inp_hora").val('')
+        $("#inp_fecha").val('')
+        $("#inp_pertenencias").val('')
+      }
+    </script>
+  </body>
+</html>

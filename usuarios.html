@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.101.0">
+    <title>Tablero</title>
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.6/examples/dashboard/">
+    <!-- Bootstrap core CSS -->
+    <link href="src/assets/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="src/style/dashboard.css" rel="stylesheet">
+    <script>
+      if (localStorage.getItem("usuario") == null) {
+        window.location = "index.html"
+      }
+    </script>
+    </script>
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    
+    <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+      <a class="navbar-brand col-md-3 col-lg-2 mr-0 px-3" href="#">Formulario</a>
+      <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-toggle="collapse" data-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <ul class="navbar-nav px-3">
+        <li class="nav-item text-nowrap">
+          <a class="nav-link" onclick="cerrar_sesion()">Cerrar sesión</a>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row">
+        <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+          <div class="sidebar-sticky pt-3">
+            <ul class="nav flex-column">
+              <li class="nav-item">
+                <a class="nav-link" href="tablero.html">
+                  <span data-feather="home"></span>
+                  Inicio <span class="sr-only"></span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" href="usuarios.html">
+                  <span data-feather="file"></span>
+                  Usuarios
+                </a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+          <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">Buscar</h1>
+          </div>
+
+          <br><br>
+          <div class="table-responsive">
+            <table class="table table-striped table-sm" id="tabla_usuarios">
+              <thead>
+                <tr>
+                  <th>Nombre</th>
+                  <th>Appellido</th>
+                  <th>Ciudad</th>
+                  <th>RFC</th>
+                  <th>Delito</th>
+                  <th>Hora</th>
+                  <th>Fecha</th>
+                  <th>Pertenencias</th>
+                </tr>
+              </thead>
+              <tbody>
+              </tbody>
+            </table>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <script src="src/js/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="src/js/jquery.min.js"><\/script>')</script><script src="src/assets/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js"></script>
+    <script src="src/plugins/datatable/js/jquery.dataTables.min.js"></script>
+    <script src="src/plugins/datatable/js/dataTables.dataTables.min.js"></script>
+    <script src="src/plugins/datatable/js/dataTables.responsive.min.js"></script>
+    <script src="src/plugins/datatable/js/responsive.dataTables.min.js"></script>
+    <script src="src/plugins/datatable/js/jquery.dataTables.js"></script>
+    <script src="src/plugins/datatable/js/dataTables.bootstrap4.js"></script>
+    <script src="src/plugins/datatable/js/dataTables.buttons.min.js"></script>
+    <script src="src/plugins/datatable/js/buttons.bootstrap4.min.js"></script>
+    <script src="src/plugins/datatable/js/jszip.min.js"></script>
+    <script src="src/plugins/datatable/js/pdfmake.min.js"></script>
+    <script src="src/plugins/datatable/js/vfs_fonts.js"></script>
+    <script src="src/plugins/datatable/js/buttons.html5.min.js"></script>
+    <script src="src/plugins/datatable/js/buttons.print.min.js"></script>
+    <script src="src/plugins/datatable/js/buttons.colVis.min.js"></script>
+    <script src="src/plugins/datatable/js/dataTables.responsive.min.js"></script>
+    <script src="src/plugins/datatable/js/responsive.bootstrap4.min.js"></script>
+    <script src="src/swal/swal2.js"></script>
+    <script src="src/js/funciones.js"></script>
+    <script>
+      let tabla_usuarios;
+
+      $(document).ready(function () {
+        tabla_usuarios = $('#tabla_usuarios').DataTable({
+          "bFilter": true,
+          "bInfo": false,
+          language: {
+            sUrl: "src/plugins/datatable/es-ES.json"
+          }
+        })
+
+        buscar_usuarios();
+      })
+
+      function buscar_usuarios() {
+        console.log("Llenar tabla de usuarios");
+        abrir_loader()
+
+        $.ajax({
+          type: "POST",
+          url: url,
+          data:{
+            op: "buscar_usuarios"
+          },
+          dataType: "json",
+          success: function (response) {
+            console.log(response);
+
+            tabla_usuarios.clear()
+            tabla_usuarios.draw()
+
+            if (response.status) {
+              const Usuarios = response.usuarios
+              
+              Usuarios.forEach(usuario => {
+                tabla_usuarios.row.add([
+                  usuario.nombre,
+                  usuario.apellido,
+                  usuario.ciudad,
+                  usuario.rfc,
+                  usuario.delito,
+                  usuario.hora,
+                  usuario.fecha,
+                  usuario.pertenencias
+                ]).draw(false);
+              });
+              
+            }
+            cerrar_loader()
+          },
+          error: function (request, status, error) {
+            console.log("request: ", request)
+            console.log("status: ", status)
+            console.log("error: ", error)
+            cerrar_loader()
+            noificacion_swal('Error','Se genero un error al consultar los datos','error')
+          }
+        })
+      }
+    </script>
+  </body>
+</html>
