@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.101.0">
+    <title>Tablero</title>
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.6/examples/dashboard/">
+    <!-- Bootstrap core CSS -->
+    <link href="src/assets/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="src/style/dashboard.css" rel="stylesheet">
+    <script>
+      if (localStorage.getItem("usuario") == null) {
+        window.location = "index.html"
+      }
+    </script>
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    
+    <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+      <a class="navbar-brand col-md-3 col-lg-2 mr-0 px-3" href="#">Formulario</a>
+      <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-toggle="collapse" data-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <ul class="navbar-nav px-3">
+        <li class="nav-item text-nowrap">
+          <a class="nav-link" onclick="cerrar_sesion()">Cerrar sesión</a>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row">
+        <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+          <div class="sidebar-sticky pt-3">
+            <ul class="nav flex-column">
+              <li class="nav-item">
+                <a class="nav-link active" href="tablero.html">
+                  <span data-feather="home"></span>
+                  Inicio <span class="sr-only"></span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="usuarios.html">
+                  <span data-feather="file"></span>
+                  Usuarios
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="usuarios.html">
+                  <span data-feather="file"></span>
+                  Perfil
+                </a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+          <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">Cambiar logo</h1>
+          </div>
+
+          <br><br>
+          <form id="frm_cambiar_logo">
+            <div class="form-row">
+              <div class="col-md-4">
+                <label for="inp_nombre">Imagen</label>
+                <input type="file" class="form-control" id="inp_file_imagen" placeholder="Selecciona tu imagen" accept="image/png, image/jpeg, image/jpg" required>
+
+                <label for="inp_nombre">Imagen seleccionada</label>
+                <img src="" id="img_logo">
+              </div>
+            </div>
+            <br>
+            <center>
+              <button type="submit" class="btn btn-primary" id="btn_frm_cambiar_logo" disabled>Subir</button>
+            </center>
+          </form>
+        </main>
+      </div>
+    </div>
+
+
+    <script src="src/js/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="src/js/jquery.min.js"><\/script>')</script><script src="src/assets/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js"></script>
+    <script src="src/swal/swal2.js"></script>
+    <script src="src/js/funciones.js"></script>
+    <script>
+      let base64String = "";
+      $(document).ready(function (){
+      })
+
+      $("#inp_file_imagen").change(function(){
+        let input = $(this);
+        let extencion = input.val().split(".").pop().toLowerCase();
+        if (input.val() != "") {
+          if (extencion == "png" || extencion == "jpeg" || extencion == "jpg") {
+            console.log(extencion);
+            $("#btn_frm_cambiar_logo").prop('disabled', false)
+
+            var file = document.querySelector('input[type=file]')['files'][0]
+            var reader = new FileReader();
+            reader.onload = function () {
+              base64String = reader.result.replace("data:","").replace(/^.+,/, "")
+              imageBase64Stringsep = base64String;
+            }
+            reader.readAsDataURL(file)
+          } else {
+            noificacion_swal('Imagen', 'Seleccione una imagen con formato [png,jpeg,jpg].', 'warning')
+          }
+        }
+      })
+
+      
+
+      $("#frm_cambiar_logo").submit(function(e){
+        e.preventDefault()
+
+        
+      })
+    </script>
+  </body>
+</html>
