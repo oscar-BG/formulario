@@ -42,4 +42,36 @@ function cerrar_sesion() {
   })
 
 }
+
+function obtener_logo() {
+
+  return new Promise(function(logo, error){
+    $.ajax({
+      type: "POST",
+      url: url,
+      data:{
+        op: "obtener_logo"
+      },
+      dataType: "json",
+      success: function (response){
+        console.log(response);
+        if (response.status) {
+          // $("#img_logo").attr("src",`data:image/png;base64,${response.logo}`)
+          logo(response.logo)
+        } else {
+          error('No se encontro la imagen')
+          // noificacion_swal('Logo','Se genero un error al consultar datos','error');
+        }
+      },
+      error: function (request, status, error) {
+        console.log("request: ", request)
+        console.log("status: ", status)
+        console.log("error: ", error)
+        noificacion_swal('Error','Se genero un error al consultar los datos','error')
+      }
+  
+    })
+    
+  })
+}
   

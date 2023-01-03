@@ -54,7 +54,7 @@
           <div class="sidebar-sticky pt-3">
             <ul class="nav flex-column">
               <li class="nav-item">
-                <a class="nav-link active" href="tablero.html">
+                <a class="nav-link" href="tablero.html">
                   <span data-feather="home"></span>
                   Inicio <span class="sr-only"></span>
                 </a>
@@ -66,7 +66,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="usuarios.html">
+                <a class="nav-link active" href="usuarios.html">
                   <span data-feather="file"></span>
                   Perfil
                 </a>
@@ -86,9 +86,12 @@
               <div class="col-md-4">
                 <label for="inp_nombre">Imagen</label>
                 <input type="file" class="form-control" id="inp_file_imagen" placeholder="Selecciona tu imagen" accept="image/png, image/jpeg, image/jpg" required>
+                
+                <div>
+                  <label for="inp_nombre">Imagen seleccionada</label>
+                  <img src="" id="img_logo" class="img-thumbnail rounded">
+                </div>
 
-                <label for="inp_nombre">Imagen seleccionada</label>
-                <img src="" id="img_logo">
               </div>
             </div>
             <br>
@@ -117,8 +120,7 @@
         if (input.val() != "") {
           if (extencion == "png" || extencion == "jpeg" || extencion == "jpg") {
             console.log(extencion);
-            $("#btn_frm_cambiar_logo").prop('disabled', false)
-
+            
             var file = document.querySelector('input[type=file]')['files'][0]
             var reader = new FileReader();
             reader.onload = function () {
@@ -126,6 +128,12 @@
               imageBase64Stringsep = base64String;
             }
             reader.readAsDataURL(file)
+            
+            setTimeout(() => {
+              $("#btn_frm_cambiar_logo").prop('disabled', false)
+              $("#img_logo").attr("src",`data:image/png;base64,${base64String}`)
+              console.log(base64String);
+            }, 1500);
           } else {
             noificacion_swal('Imagen', 'Seleccione una imagen con formato [png,jpeg,jpg].', 'warning')
           }
@@ -136,7 +144,40 @@
 
       $("#frm_cambiar_logo").submit(function(e){
         e.preventDefault()
+        console.log('Subir imagen');
 
+        abrir_loader()
+
+        const ID_USUARIO = localStorage.getItem('id_usuario')
+        
+        $.ajax({
+          type: "POST",
+          url: url,
+          data:{
+            op: "cambiar_logo",
+            imagen: base64String,
+            id_usuario: ID_USUARIO
+          },
+          dataType: "json",
+          success: function (response) {
+            console.log(response)
+            cerrar_loader()
+            if (response.status) {
+              $("#img_logo").attr("src",'')
+              $("#inp_file_imagen").val('')
+              noificacion_swal('Logo', 'Imagen actualizada', 'success')
+            } else {
+              noificacion_swal('Logo', 'Error al actualizar imagen', 'error')
+            }
+          },
+          error: function (request, status, error) {
+            console.log("request: ", request)
+            console.log("status: ", status)
+            console.log("error: ", error)
+            cerrar_loader()
+            noificacion_swal('Error','Se genero un error al consultar los datos','error')
+          }
+        })
         
       })
     </script>

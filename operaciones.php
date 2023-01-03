@@ -105,6 +105,29 @@ switch ($operacion) {
         }
 
         break;
+    case 'cambiar_logo':
+        $imagen64 = $_POST['imagen'];
+        $id_usuario = $_POST['id_usuario'];
+
+        $update = "UPDATE login SET logo = '$imagen64' WHERE id = $id_usuario";
+        if ($con->query($update)) {
+            $resultado['status'] = true;
+        } else {
+            $resultado['status'] = false;
+            $resultado['mensaje'] = 'Error al actualizar imagen';
+        }
+        break;
+    case 'obtener_logo':
+        $select = "SELECT logo FROM login where id = 1";
+        $respuesta = $con->query($select);
+        $num_filas = $respuesta->num_rows;
+
+        if ($num_filas > 0) {
+            $row = $respuesta -> fetch_array();
+            $resultado['status'] = true;
+            $resultado['logo'] = $row['logo'];
+        }
+        break;
     
     default:
         # code...

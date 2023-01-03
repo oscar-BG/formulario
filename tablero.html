@@ -141,6 +141,12 @@
     <script src="src/swal/swal2.js"></script>
     <script src="src/js/funciones.js"></script>
     <script>
+      $(document).ready(async function(){
+        logo_64 = await obtener_logo()
+        $("#img_logo").attr("src",`data:image/png;base64,${logo_64}`)
+      })
+
+
       $("#frm_registrar_usuarios").submit(function(e) {
         e.preventDefault()
 

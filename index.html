@@ -33,7 +33,7 @@
   <body class="text-center">
     
     <form id="frm_ingresar" class="form-signin">
-    
+    <img class="mb-4" id="img_logo" src="" alt="" width="72" height="72">
     <h1 class="h3 mb-3 font-weight-normal">Inicio de sesión</h1>
     <label for="inp_usuario" class="sr-only">Usuario</label>
     <input type="text" id="inp_usuario" class="form-control" placeholder="Usuario" required autofocus>
@@ -46,13 +46,17 @@
     </form>
 
     <script src="src/js/jquery.min.js"></script>
+    <script src="src/swal/swal2.js"></script>
     <script src="src/js/funciones.js"></script>
     <script>
         
 
-        $(document).ready(function(){
-            
+        $(document).ready(async function(){
+          logo_64 = await obtener_logo()
+          $("#img_logo").attr("src",`data:image/png;base64,${logo_64}`)
         })
+
+        
 
         $("#frm_ingresar").submit(function(e){
             e.preventDefault()
