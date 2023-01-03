@@ -16,8 +16,9 @@ switch ($operacion) {
         $hora = $_POST['hora'];
         $fecha = $_POST['fecha'];
         $pertenencias = $_POST['pertenencias'];
+        $fotografia = $_POST['fotografia'];
 
-        $insert = "INSERT INTO usuarios(nombre, apellido, ciudad, rfc, delito, hora, fecha, pertenencias) VALUES ('$nombre','$apellido','$ciudad','$rfc','$delito','$hora','$fecha','$pertenencias')";
+        $insert = "INSERT INTO usuarios(nombre, apellido, ciudad, rfc, delito, hora, fecha, pertenencias, fotografia) VALUES ('$nombre','$apellido','$ciudad','$rfc','$delito','$hora','$fecha','$pertenencias', '$fotografia')";
         if ($con->query($insert) === true) {
             $resultado['status'] = true;
         } else {
@@ -51,7 +52,8 @@ switch ($operacion) {
                     'delito' => $row['delito'],
                     'hora' => $row['hora'],
                     'fecha' => $row['fecha'],
-                    'pertenencias' => $row['pertenencias']
+                    'pertenencias' => $row['pertenencias'],
+                    'fotografia' => $row['fotografia']
                 );
             }
         } else {
@@ -105,30 +107,6 @@ switch ($operacion) {
         }
 
         break;
-    case 'cambiar_logo':
-        $imagen64 = $_POST['imagen'];
-        $id_usuario = $_POST['id_usuario'];
-
-        $update = "UPDATE login SET logo = '$imagen64' WHERE id = $id_usuario";
-        if ($con->query($update)) {
-            $resultado['status'] = true;
-        } else {
-            $resultado['status'] = false;
-            $resultado['mensaje'] = 'Error al actualizar imagen';
-        }
-        break;
-    case 'obtener_logo':
-        $select = "SELECT logo FROM login where id = 1";
-        $respuesta = $con->query($select);
-        $num_filas = $respuesta->num_rows;
-
-        if ($num_filas > 0) {
-            $row = $respuesta -> fetch_array();
-            $resultado['status'] = true;
-            $resultado['logo'] = $row['logo'];
-        }
-        break;
-    
     default:
         # code...
         break;

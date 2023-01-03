@@ -65,12 +65,6 @@
                   Usuarios
                 </a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="perfil.html">
-                  <span data-feather="file"></span>
-                  Perfil
-                </a>
-              </li>
             </ul>
           </div>
         </nav>
@@ -102,20 +96,24 @@
                 <input type="text" class="form-control" id="inp_rfc" placeholder="Ingrese RFC" required maxlength="100">
               </div>
               <div class="col-md-4">
+                <label for="inp_hora">Hora</label>
+                <input type="time" class="form-control" id="inp_hora" placeholder="Hora" required>
+              </div>
+              <div class="col-md-4">
+                <label for="inp_file_imagen">Fotografía</label>
+                <input type="file" class="form-control" id="inp_file_imagen" placeholder="Selecciona tu imagen" accept="image/png, image/jpeg, image/jpg" required>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="col-md-4">
+                <label for="inp_fecha">Fecha</label>
+                <input type="date" class="form-control" id="inp_fecha" placeholder="Fecha" required>
+              </div>
+              <div class="col-md-4">
                 <label for="inp_delito">Delito</label>
                 <textarea class="form-control" name="inp_delito" id="inp_delito" cols="5" rows="5" required maxlength="150"></textarea>
               </div>
               <div class="col-md-4">
-                <label for="inp_hora">Hora</label>
-                <input type="time" class="form-control" id="inp_hora" placeholder="Hora" required>
-              </div>
-            </div>
-            <div class="form-row">
-              <div class="col-md-6">
-                <label for="inp_fecha">Fecha</label>
-                <input type="date" class="form-control" id="inp_fecha" placeholder="Fecha" required>
-              </div>
-              <div class="col-md-6">
                 <label for="inp_pertenencias">Pertenencias</label>
                 <textarea class="form-control" name="inp_pertenencias" id="inp_pertenencias" cols="5" rows="5" maxlength="150" required></textarea>
               </div>
@@ -141,11 +139,32 @@
     <script src="src/swal/swal2.js"></script>
     <script src="src/js/funciones.js"></script>
     <script>
-      $(document).ready(async function(){
-        logo_64 = await obtener_logo()
-        $("#img_logo").attr("src",`data:image/png;base64,${logo_64}`)
+      let base64String = "";
+      $(document).ready(function(){
+        
       })
 
+      $("#inp_file_imagen").change(function(){
+        let input = $(this);
+        let extencion = input.val().split(".").pop().toLowerCase();
+        if (input.val() != "") {
+          if (extencion == "png" || extencion == "jpeg" || extencion == "jpg") {
+            console.log(extencion);
+            
+            var file = document.querySelector('input[type=file]')['files'][0]
+            var reader = new FileReader();
+            reader.onload = function () {
+              base64String = reader.result.replace("data:","").replace(/^.+,/, "")
+              imageBase64Stringsep = base64String;
+            }
+            reader.readAsDataURL(file)
+            
+          } else {
+            $("#inp_file_imagen").val('')
+            noificacion_swal('Imagen', 'Seleccione una imagen con formato [png,jpeg,jpg].', 'warning')
+          }
+        }
+      })
 
       $("#frm_registrar_usuarios").submit(function(e) {
         e.preventDefault()
@@ -173,7 +192,8 @@
             delito: delito,
             hora: hora,
             fecha: fecha,
-            pertenencias: pertenencias
+            pertenencias: pertenencias,
+            fotografia: base64String
           },
           dataType: "json",
           success: function (response) {
@@ -210,6 +230,7 @@
         $("#inp_hora").val('')
         $("#inp_fecha").val('')
         $("#inp_pertenencias").val('')
+        $("#inp_file_imagen").val('')
       }
     </script>
   </body>

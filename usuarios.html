@@ -66,12 +66,6 @@
                   Usuarios
                 </a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="perfil.html">
-                  <span data-feather="file"></span>
-                  Perfil
-                </a>
-              </li>
             </ul>
           </div>
         </nav>
@@ -94,6 +88,7 @@
                   <th>Hora</th>
                   <th>Fecha</th>
                   <th>Pertenencias</th>
+                  <th>Fotografía</th>
                 </tr>
               </thead>
               <tbody>
@@ -161,6 +156,9 @@
               const Usuarios = response.usuarios
               
               Usuarios.forEach(usuario => {
+                console.log(usuario);
+                
+                let fotografia = `<img src="data:image/png;base64,${usuario.fotografia}" id="img_logo" class="img-thumbnail rounded">`;
                 tabla_usuarios.row.add([
                   usuario.nombre,
                   usuario.apellido,
@@ -169,7 +167,8 @@
                   usuario.delito,
                   usuario.hora,
                   usuario.fecha,
-                  usuario.pertenencias
+                  usuario.pertenencias,
+                  fotografia
                 ]).draw(false);
               });
               
